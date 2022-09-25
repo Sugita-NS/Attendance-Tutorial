@@ -1,8 +1,12 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update]
-  before_action :logged_in_user, only: [:show, :edit, :update]
+  before_action :logged_in_user, only: [:index, :show, :edit, :update]
   before_action :correct_user, only: [:edit, :update]
 
+  def index
+    @users = User.all
+  end
+  
   def show
   end
 
@@ -13,7 +17,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      log_in @user # 保存成功後、ログインします。
+      log_in @user
       flash[:success] = '新規作成に成功しました。'
       redirect_to @user
     else
@@ -49,6 +53,7 @@ class UsersController < ApplicationController
     # ログイン済みのユーザーか確認します。
     def logged_in_user
       unless logged_in?
+        store_location
         flash[:danger] = "ログインしてください。"
         redirect_to login_url
       end
@@ -56,6 +61,6 @@ class UsersController < ApplicationController
     
     # アクセスしたユーザーが現在ログインしているユーザーか確認します。
     def correct_user
-      redirect_to(root_url) unless currrnt_user?(@user)
+      redirect_to(root_url) unless current_user?(@user)
     end  
 end
