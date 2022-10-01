@@ -9,8 +9,8 @@ Rails.application.routes.draw do
 
   resources :users do
     member do
-      get 'edit_bacic_info'
-      patch 'update_bacic_info'
+      get 'edit_basic_info'
+      patch 'update_basic_info'
     end
   end  
 end
